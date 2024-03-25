@@ -10,6 +10,7 @@ public class EnemyDetector : MonoBehaviour
     private void OnTriggerEnter(Collider collision) {
         if(collision.tag == "Player")
         {
+            Debug.Log(collision.name);
              _projectileLauncher.enabled = true;
         }
     }

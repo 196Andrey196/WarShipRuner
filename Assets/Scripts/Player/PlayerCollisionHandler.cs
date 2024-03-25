@@ -1,23 +1,26 @@
+using System;
 using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
 
-    private HealthManager _healthManager;
-    [SerializeField] private GameObject _collideWithObstacle;
+    private MainHealthManager _healthManager;
+    private GameObject _collideWithObstacle;
+    public Action<GameObject> onCollision;
 
     private void Start()
     {
-        _healthManager = GetComponent<HealthManager>();
+        _healthManager = GetComponent<MainHealthManager>();
     }
 
 
     private void OnTriggerEnter(Collider collision)
     {
-        // if (collision != null && collision.tag == "Bonus")
-        // {
-        //     HandleCollision(collision.gameObject);
-        // }
+        if (collision != null && collision.tag == "Bonus")
+        {
+            PickUpBonus bonus = collision.GetComponent<PickUpBonus>();
+            bonus.pickUpBonus?.Invoke(collision.gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -39,4 +42,5 @@ public class PlayerCollisionHandler : MonoBehaviour
             _healthManager.takeDamage?.Invoke(hitDamge);
         }
     }
+
 }

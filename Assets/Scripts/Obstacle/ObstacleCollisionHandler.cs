@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ObstacleCollisionHandler : MonoBehaviour
 {
-    private HealthManager _healthManager;
+    private MainHealthManager _healthManager;
     private void Start()
     {
-        _healthManager = GetComponent<HealthManager>();
+        _healthManager = GetComponent<MainHealthManager>();
     }
 
 

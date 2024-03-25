@@ -27,7 +27,7 @@ public class ExplosionAndDamage : MonoBehaviour
     {
         if (obj != null)
         {
-            HealthManager _healthManager = obj.GetComponent<HealthManager>();
+            MainHealthManager _healthManager = obj.GetComponent<MainHealthManager>();
             _healthManager.takeDamage?.Invoke(_projectileData.damage);
             _poolManager.Release(gameObject);
 

@@ -26,9 +26,9 @@ public class BulletCollisionHandler : MonoBehaviour
 
     public void HandleCollision(GameObject hitedObject)
     {
-        if (hitedObject)
+        if (hitedObject && gameObject.activeSelf)
         {
-            HealthManager _healthManager = hitedObject.GetComponent<HealthManager>();
+            MainHealthManager _healthManager = hitedObject.GetComponent<MainHealthManager>();
             _healthManager.takeDamage?.Invoke(_projectileData.damage);
             _poolManager.Release(gameObject);
         }
