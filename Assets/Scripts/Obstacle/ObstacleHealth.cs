@@ -4,7 +4,8 @@ using UnityEngine;
 public class ObstacleDeathManager : MonoBehaviour
 {
     private MainHealthManager _mainHealthManager;
-    private void Awake() {
+    private void Awake()
+    {
         _mainHealthManager = GetComponent<MainHealthManager>();
     }
     private void OnEnable()
@@ -17,8 +18,8 @@ public class ObstacleDeathManager : MonoBehaviour
         _mainHealthManager.objDie -= Die;
     }
 
-    private void Die()
+    virtual protected void Die()
     {
-       Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

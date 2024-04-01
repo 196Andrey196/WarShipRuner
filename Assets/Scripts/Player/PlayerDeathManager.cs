@@ -24,6 +24,6 @@ public class PlayerDeathManager : MonoBehaviour
         GameObject shooterEntityPos = transform.GetChild(1).gameObject;
         splineFollower.enabled = false;
         shooterEntityPos.SetActive(false);
-        Debug.Log(gameObject.name + "  DIE");
+  
     }
 }

@@ -5,8 +5,7 @@ public class Wallet : MonoBehaviour
 {
     public static Wallet instance;
     [SerializeField] private TextMeshProUGUI _coinCounter;
-    [SerializeField] private float _currentCoinsInWallet;
-    public float currentCoinsInWallet { get { return _currentCoinsInWallet; } }
+    [SerializeField] private PlayerData _playerData;
 
     private void Awake()
     {
@@ -15,31 +14,26 @@ public class Wallet : MonoBehaviour
             return;
         }
         instance = this;
-
-    }
-    private void Start()
-    {
-        UpdateCoinsCounter();
     }
     public void AddMoneyInWallet(float cost)
     {
         if (cost != 0 && cost > 0)
         {
-            _currentCoinsInWallet += cost;
+            _playerData.currentCoinsInWallet += cost;
             UpdateCoinsCounter();
 
         }
     }
     public void SpendCoins(float cost)
     {
-        if (cost <= _currentCoinsInWallet)
+        if (cost <= _playerData.currentCoinsInWallet)
         {
-            _currentCoinsInWallet -= cost;
+            _playerData.currentCoinsInWallet -= cost;
             UpdateCoinsCounter();
         }
     }
-    private void UpdateCoinsCounter()
+    public void UpdateCoinsCounter()
     {
-        _coinCounter.text = _currentCoinsInWallet.ToString();
+        _coinCounter.text = _playerData.currentCoinsInWallet.ToString();
     }
 }

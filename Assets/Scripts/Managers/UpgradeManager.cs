@@ -5,23 +5,13 @@ using UnityEngine;
 public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager instance;
-    [SerializeField] GameObject _playerData;
+    [SerializeField] GameObject _player;
     [SerializeField] private UpgradeInfo _upgradeInfo;
-    private MainObjectData _mainObjectData;
+    private PlayerData _playerData;
+    public PlayerData playerData { get { return _playerData; } }
     [SerializeField] private List<LevelData> _levelsData;
     public List<LevelData> levelsData { get { return _levelsData; } }
-    [SerializeField] private int _currentLevelId;
-    public int currentLevelId { get { return _currentLevelId; } set { if (value < _levelsData.Count - 1) _currentLevelId = value; } }
 
-    public Action upgrade;
-    private void OnEnable()
-    {
-        upgrade += SetParametersForLevel;
-    }
-    private void OnDisable()
-    {
-        upgrade += SetParametersForLevel;
-    }
 
 
     private void Awake()
@@ -31,17 +21,22 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         instance = this;
-        _mainObjectData = _playerData.GetComponent<MainObjectData>();
-
+        _playerData = _player.GetComponent<PlayerData>();
     }
-    private void ActiveSoldier()
+    private void Start()
     {
-
-        Transform soldiersParent = _playerData.transform.GetChild(1);
+        SetParametersForLevel();
+        for (int i = 0; i < _playerData.currentLevelId + 1; i++)
+        {
+            ActivateSoldier(_levelsData[_playerData.currentLevelId].maxSoldiers);
+        }
+    }
+    private void ActivateSoldier(float solderOnBoat)
+    {
+        Transform soldiersParent = _player.transform.GetChild(1);
         if (soldiersParent != null)
         {
-            int soldierOnBoat = _levelsData.Count;
-            for (int i = 0; i < soldierOnBoat; i++)
+            for (int i = 0; i < solderOnBoat; i++)
             {
                 GameObject child = soldiersParent.GetChild(i).gameObject;
 
@@ -55,21 +50,31 @@ public class UpgradeManager : MonoBehaviour
     }
     private void SetParametersForLevel()
     {
-        if (_currentLevelId < _levelsData.Count - 1 && Wallet.instance.currentCoinsInWallet > _levelsData[_currentLevelId].upgradeCost)
+        if (_playerData.currentLevelId < _levelsData.Count && _playerData.currentCoinsInWallet > _levelsData[_playerData.currentLevelId].upgradeCost)
         {
-            _currentLevelId++;
-            _upgradeInfo.updateUiInfo?.Invoke();
-            _mainObjectData.health = _levelsData[_currentLevelId].health;
-            _mainObjectData.currentHealth = _levelsData[_currentLevelId].health;
-            _mainObjectData.fireCooldown = _levelsData[_currentLevelId].fireCooldown;
-            float costUpgrade = _levelsData[_currentLevelId].upgradeCost;
-            Wallet.instance.SpendCoins(costUpgrade);
-            Debug.Log("SetPatameters Level = " + (_currentLevelId + 1));
+
+            _playerData.health = _levelsData[_playerData.currentLevelId].health;
+            _playerData.currentHealth = _levelsData[_playerData.currentLevelId].health;
+            _playerData.fireCooldown = _levelsData[_playerData.currentLevelId].fireCooldown;
+            _upgradeInfo.UpdateUI();
         }
-        else Debug.Log("You can't upgrade level");
     }
+    public void UpgradePlayer()
+    {
+        if (playerData.currentLevelId < _levelsData.Count - 1)
+        {
+            _playerData.currentLevelId++;
+            ActivateSoldier(_levelsData[_playerData.currentLevelId].maxSoldiers);
+            SetParametersForLevel();
+            float costUpgrade = _levelsData[_playerData.currentLevelId].upgradeCost;
+            Wallet.instance.SpendCoins(costUpgrade);
+        }
 
 
-
-
+    }
+    public bool CheckCurrentLevel()
+    {
+        if (_playerData.currentLevelId == _levelsData.Count - 1) return true;
+        return false;
+    }
 }

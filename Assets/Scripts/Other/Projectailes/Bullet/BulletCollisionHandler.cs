@@ -17,7 +17,7 @@ public class BulletCollisionHandler : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision != null && collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "Player")
+        if (collision != null && collision.gameObject.tag == "Obstacle")
         {
             HandleCollision(collision.gameObject);
         }

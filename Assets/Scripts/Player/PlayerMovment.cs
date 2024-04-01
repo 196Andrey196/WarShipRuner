@@ -8,8 +8,8 @@ public class PlayerMovment : MonoBehaviour
     [SerializeField] private float _minLerpSpeed;
     [SerializeField] private float _maxLerpSpeed;
     private float _axeValue;
-   private float _animationValue;
-    private PlayerSwipe _playerSwipe;
+    private float _animationValue;
+    [SerializeField] private SwipeManager _playerSwipe;
     private void OnEnable()
     {
         _playerSwipe.onSwipe += UpdatePosition;
@@ -22,7 +22,6 @@ public class PlayerMovment : MonoBehaviour
 
     void Awake()
     {
-        _playerSwipe = GetComponent<PlayerSwipe>();
         _splineFollower = GetComponent<SplineFollower>();
         _animator = GetComponent<Animator>();
     }

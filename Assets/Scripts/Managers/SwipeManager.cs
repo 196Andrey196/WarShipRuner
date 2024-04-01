@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerSwipe : MonoBehaviour
+public class SwipeManager : MonoBehaviour
 {
+    public static SwipeManager instance;
     private PlayerInput _playerInput;
     [SerializeField] private float _swipeThreshold;
     [SerializeField] private float _sensitivityScale;
@@ -13,14 +14,19 @@ public class PlayerSwipe : MonoBehaviour
     [SerializeField] private bool _touchOnScreen;
     public bool touchOnScreen { get { return _touchOnScreen; } }
 
-    public event Action<Vector2, float> onSwipe;
+    public Action<Vector2, float> onSwipe;
+    public Action playerSwipe;
 
     private void Awake()
     {
         _touchOnScreen = false;
         _playerInput = new PlayerInput();
+        if (instance != null)
+        {
+            return;
+        }
+        instance = this;
     }
-
     private void OnEnable()
     {
         _playerInput.Player.TouchPosition.started += ctx => SetTouchPosition(ctx);
@@ -43,15 +49,15 @@ public class PlayerSwipe : MonoBehaviour
 
     private void OnSwipeUpdated(InputAction.CallbackContext ctx)
     {
+        Swipe();
         Vector2 currentSwipePosition = ctx.ReadValue<Vector2>();
         _swipeDirection = currentSwipePosition - _startTouchPosition;
-        Swipe();
-
         onSwipe?.Invoke(_swipeDirection, _maxSwipeMagnitude);
     }
 
     private void Swipe()
     {
+        playerSwipe?.Invoke();
         Vector2 scaledSwipeDirection = _swipeDirection * _sensitivityScale;
 
         if (scaledSwipeDirection.magnitude < _swipeThreshold)

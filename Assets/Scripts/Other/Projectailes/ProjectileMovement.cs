@@ -7,8 +7,6 @@ public class ProjectileMovement : MonoBehaviour
     private PoolManager _poolManager;
     private ProjectileData _projectileData;
 
-
-
     private void Start()
     {
         _projectileData = GetComponent<ProjectileData>();
@@ -17,7 +15,9 @@ public class ProjectileMovement : MonoBehaviour
 
     void Update()
     {
-        _startMovePosition = _projectileData.parentObject.transform.position;
+
+        if (_projectileData.parentObject) _startMovePosition = _projectileData.parentObject.transform.position;
+        else Destroy(gameObject);
         MoveBullet();
     }
     private void MoveBullet()
