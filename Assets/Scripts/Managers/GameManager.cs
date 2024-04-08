@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
      public bool pauseStatus;
      [SerializeField] private GameObject _gameOverMenu;
      [SerializeField] private GameObject _winMenu;
+   
 
      private void Awake()
      {
@@ -21,9 +22,9 @@ public class GameManager : MonoBehaviour
      }
      private void Start()
      {
+          SetStartSettings();
           _gameStarted = true;
           SetPauseStatus();
-          SetStartSettings();
           SwipeManager.instance.playerSwipe += PlayerSwipe;
      }
      private void OnDisable()
@@ -45,10 +46,14 @@ public class GameManager : MonoBehaviour
      }
      private void GameOver()
      {
-          if (_gameOverMenu) _gameOverMenu.SetActive(true);
+          if (_gameOverMenu)
+          {
+               _gameOverMenu.SetActive(true);
+          }
      }
      public void LevelComplete()
      {
+        
           SaveLevelDataManager.instance.SaveData(_playerData);
           _player.transform.GetChild(1).gameObject.SetActive(false);
           if (_winMenu) _winMenu.SetActive(true);

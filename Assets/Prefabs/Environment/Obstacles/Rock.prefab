@@ -303,9 +303,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 100
-  _destroySound: {fileID: 0}
+  _destroySound: {fileID: 8300000, guid: 267bdefcc5108e14384ef4160218157f, type: 3}
   _collisionDamage: 80
   _currentHealth: 0
+  _fireCooldown: 0
 --- !u!114 &1385499197217235263
 MonoBehaviour:
   m_ObjectHideFlags: 0

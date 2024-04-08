@@ -16,8 +16,10 @@ public class PickUpBonus : MonoBehaviour
     private void PickUp(GameObject bonus)
     {
         IBonus iBonus = bonus.GetComponent<IBonus>();
+        BonusData bonusData = bonus.GetComponent<BonusData>();
         if (iBonus != null)
         {
+            SoundManager.instance.PlaySoundEfects(bonusData.pickUpSound,0.3f);
             iBonus.Activate();
         }
         else

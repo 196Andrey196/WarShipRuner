@@ -1,20 +1,29 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MainObjectData : MonoBehaviour
 {
-
-    [SerializeField] private float _health;
+    [SerializeField] protected int _currentLevelId;
+    public int currentLevelId
+    {
+        get { return _currentLevelId; }
+        set { if (value > 0) _currentLevelId = value; }
+    }
+    [SerializeField] protected List<LevelData> _levelsList;
+    public List<LevelData> levelsList { get { return _levelsList; } }
+    [SerializeField] protected float _health;
     public float health
     {
         get { return _health; }
         set { if (value > 0) _health = value; }
     }
-    [SerializeField] private AudioClip _destroySound;
-    [SerializeField] private float _collisionDamage;
+    [SerializeField] protected AudioClip _destroySound;
+    public AudioClip destroySound { get { return _destroySound; } }
+    [SerializeField] protected float _collisionDamage;
     public float collisionDamage { get { return _collisionDamage; } }
-    [SerializeField] private float _currentHealth;
-    [SerializeField] private float _fireCooldown;
+    [SerializeField] protected float _currentHealth;
+    [SerializeField] protected float _fireCooldown;
     public float fireCooldown
     {
         get { return _fireCooldown; }
@@ -25,6 +34,7 @@ public class MainObjectData : MonoBehaviour
         get { return _currentHealth; }
         set { _currentHealth = Mathf.Clamp(value, 0, _health); }
     }
+
     private void Start()
     {
         _currentHealth = _health;

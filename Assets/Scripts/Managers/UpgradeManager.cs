@@ -1,40 +1,30 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
 {
-    public static UpgradeManager instance;
-    [SerializeField] GameObject _player;
-    [SerializeField] private UpgradeInfo _upgradeInfo;
-    private PlayerData _playerData;
-    public PlayerData playerData { get { return _playerData; } }
-    [SerializeField] private List<LevelData> _levelsData;
+    private MainObjectData _boatData;
+    public MainObjectData boatData { get { return _boatData; } }
+    private List<LevelData> _levelsData;
     public List<LevelData> levelsData { get { return _levelsData; } }
-
-
 
     private void Awake()
     {
-        if (instance != null)
-        {
-            return;
-        }
-        instance = this;
-        _playerData = _player.GetComponent<PlayerData>();
+        _boatData = GetComponent<MainObjectData>();
+        _levelsData = _boatData.levelsList;
+        SetParametersForLevel();
     }
     private void Start()
     {
-        SetParametersForLevel();
-        for (int i = 0; i < _playerData.currentLevelId + 1; i++)
+        for (int i = 0; i < _boatData.currentLevelId + 1; i++)
         {
-            ActivateSoldier(_levelsData[_playerData.currentLevelId].maxSoldiers);
+            ActivateSoldier(_levelsData[_boatData.currentLevelId].maxSoldiers);
         }
     }
-    private void ActivateSoldier(float solderOnBoat)
+    public void ActivateSoldier(float solderOnBoat)
     {
-        Transform soldiersParent = _player.transform.GetChild(1);
-        if (soldiersParent != null)
+        Transform soldiersParent = transform.GetChild(1);
+        if (soldiersParent != null && solderOnBoat > 0)
         {
             for (int i = 0; i < solderOnBoat; i++)
             {
@@ -48,33 +38,19 @@ public class UpgradeManager : MonoBehaviour
             }
         }
     }
-    private void SetParametersForLevel()
+    public void SetParametersForLevel()
     {
-        if (_playerData.currentLevelId < _levelsData.Count && _playerData.currentCoinsInWallet > _levelsData[_playerData.currentLevelId].upgradeCost)
+        if (_boatData.currentLevelId < _levelsData.Count)
         {
 
-            _playerData.health = _levelsData[_playerData.currentLevelId].health;
-            _playerData.currentHealth = _levelsData[_playerData.currentLevelId].health;
-            _playerData.fireCooldown = _levelsData[_playerData.currentLevelId].fireCooldown;
-            _upgradeInfo.UpdateUI();
+            _boatData.health = _levelsData[_boatData.currentLevelId].health;
+            _boatData.currentHealth = _levelsData[_boatData.currentLevelId].health;
+            _boatData.fireCooldown = _levelsData[_boatData.currentLevelId].fireCooldown;
         }
-    }
-    public void UpgradePlayer()
-    {
-        if (playerData.currentLevelId < _levelsData.Count - 1)
-        {
-            _playerData.currentLevelId++;
-            ActivateSoldier(_levelsData[_playerData.currentLevelId].maxSoldiers);
-            SetParametersForLevel();
-            float costUpgrade = _levelsData[_playerData.currentLevelId].upgradeCost;
-            Wallet.instance.SpendCoins(costUpgrade);
-        }
-
-
     }
     public bool CheckCurrentLevel()
     {
-        if (_playerData.currentLevelId == _levelsData.Count - 1) return true;
+        if (_boatData.currentLevelId == _levelsData.Count - 1) return true;
         return false;
     }
 }

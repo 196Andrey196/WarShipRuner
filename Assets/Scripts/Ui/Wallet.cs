@@ -21,7 +21,6 @@ public class Wallet : MonoBehaviour
         {
             _playerData.currentCoinsInWallet += cost;
             UpdateCoinsCounter();
-
         }
     }
     public void SpendCoins(float cost)

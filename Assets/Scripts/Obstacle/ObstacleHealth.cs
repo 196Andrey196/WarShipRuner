@@ -4,9 +4,11 @@ using UnityEngine;
 public class ObstacleDeathManager : MonoBehaviour
 {
     private MainHealthManager _mainHealthManager;
+    private MainObjectData _mainObjectData;
     private void Awake()
     {
         _mainHealthManager = GetComponent<MainHealthManager>();
+        _mainObjectData = GetComponent<MainObjectData>();
     }
     private void OnEnable()
     {
@@ -20,6 +22,7 @@ public class ObstacleDeathManager : MonoBehaviour
 
     virtual protected void Die()
     {
+        SoundManager.instance.DestroySoundEfects(_mainObjectData.destroySound, 0.1f);
         Destroy(gameObject);
     }
 }

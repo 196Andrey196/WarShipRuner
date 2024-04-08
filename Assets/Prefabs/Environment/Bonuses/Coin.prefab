@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cost: 10
-  _pickUpSound: {fileID: 0}
+  _pickUpSound: {fileID: 8300000, guid: 2d927298b3780ae48b565085d482fbeb, type: 3}
 --- !u!114 &-8321035174074690325
 MonoBehaviour:
   m_ObjectHideFlags: 0

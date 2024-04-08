@@ -35,12 +35,16 @@ public class PlayerMovment : MonoBehaviour
     {
 
         float targetOffsetX = _splineFollower.offsetModifier.keys[0].offset.x + scaledSwipeDirection.x;
-        float clampedX = Mathf.Clamp(targetOffsetX, -3f, 3f);
+        float clampedX = Mathf.Clamp(targetOffsetX, -3f, 2f);
         float dynamicLerpSpeed = Mathf.Lerp(_minLerpSpeed, _maxLerpSpeed, Mathf.InverseLerp(0, maxSwipeMagnitude, scaledSwipeDirection.magnitude));
         _axeValue = Mathf.Lerp(_axeValue, clampedX, dynamicLerpSpeed * Time.deltaTime);
         _animationValue = _axeValue;
         _splineFollower.offsetModifier.keys[0].offset.x = _axeValue;
 
+    }
+    public void StopMove()
+    {
+        if (_splineFollower) _splineFollower.followSpeed = 0;
     }
 
 

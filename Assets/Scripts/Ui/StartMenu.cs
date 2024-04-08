@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +7,18 @@ public class StartMenu : MonoBehaviour
   [SerializeField] private GameObject _startInfo;
   private Button _upgradeBTN;
   private Button _playBTN;
+  [SerializeField] private AudioClip _buySound;
   private void Start()
+  {
+    AddButtonsAndListeners();
+    SwipeManager.instance.playerSwipe += PlayerSwipe;
+  }
+  private void AddButtonsAndListeners()
   {
     _upgradeBTN = _startMenu.transform.GetChild(1).GetComponent<Button>();
     _playBTN = _startMenu.transform.GetChild(2).GetComponent<Button>();
     _upgradeBTN.onClick.AddListener(UpgradeButtonClick);
     _playBTN.onClick.AddListener(PlayButtonClick);
-    SwipeManager.instance.playerSwipe += PlayerSwipe;
-    if (UpgradeManager.instance.CheckCurrentLevel()) _upgradeBTN.interactable = false;
   }
 
   private void OnDisable()
@@ -32,8 +35,8 @@ public class StartMenu : MonoBehaviour
 
   private void UpgradeButtonClick()
   {
-    UpgradeManager.instance.UpgradePlayer();
-    if (UpgradeManager.instance.CheckCurrentLevel()) _upgradeBTN.interactable = false;
+    SoundManager.instance.PlaySoundEfects(_buySound,0.3f);
+    PlayerUpgradeManager.instance.UpgradePlayer();
   }
 
 

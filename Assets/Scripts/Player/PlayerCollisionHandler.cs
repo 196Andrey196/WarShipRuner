@@ -5,12 +5,13 @@ public class PlayerCollisionHandler : MonoBehaviour
 {
 
     private MainHealthManager _healthManager;
-    private GameObject _collideWithObstacle;
     public Action<GameObject> onCollision;
+    private PlayerData _playerData;
 
     private void Start()
     {
         _healthManager = GetComponent<MainHealthManager>();
+        _playerData = GetComponent<PlayerData>();
     }
 
 
@@ -27,6 +28,7 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         if (collision != null && collision.gameObject.tag == "Obstacle")
         {
+            SoundManager.instance.PlaySoundEfects(_playerData.collisionSound, 0.3f);
             HandleCollision(collision.gameObject);
         }
     }
@@ -37,7 +39,6 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         if (hitedObject)
         {
-            _collideWithObstacle = hitedObject;
             float hitDamge = hitedObject.GetComponent<MainObjectData>().collisionDamage;
             _healthManager.takeDamage?.Invoke(hitDamge);
         }

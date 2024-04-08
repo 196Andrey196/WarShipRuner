@@ -9,8 +9,13 @@ public class ProjectileLauncher : MonoBehaviour
     [SerializeField] private int _countObjectInPool;
     [SerializeField] private MainObjectData _mainObjectData;
     [SerializeField] private Transform _firePoint;
+    [SerializeField] private AudioClip _gunFireSound;
+    private ParticleSystem _shootEfect;
+    private AudioSource _audioSource;
     private void Start()
     {
+        _shootEfect = _firePoint.GetChild(0).GetComponent<ParticleSystem>();
+        _audioSource = _firePoint.GetComponent<AudioSource>();
         _poolManager = new PoolManager(_projectilePrefab, _countObjectInPool, _firePoint);
         GetParrentObject();
         StartCoroutine(ShootWithInterval());
@@ -41,6 +46,8 @@ public class ProjectileLauncher : MonoBehaviour
         yield return new WaitForSeconds(1f);
         while (true)
         {
+            SoundManager.instance.PlayIndividualSound(_audioSource, _gunFireSound, 0.1f);
+            _shootEfect.Play();
             float fireCooldown = _mainObjectData.fireCooldown;
             GameObject obj = _poolManager.GetObject();
             ProjectileData projectile = obj.GetComponent<ProjectileData>();

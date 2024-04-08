@@ -2,12 +2,8 @@ using UnityEngine;
 
 public class PlayerData : MainObjectData
 {
-    [SerializeField] private int _currentLevelId;
-    public int currentLevelId
-    {
-        get { return _currentLevelId; }
-        set { if (value > 0) _currentLevelId = value; }
-    }
+    [SerializeField] private AudioClip _collisionSound;
+    public AudioClip collisionSound { get { return _collisionSound; } }
     [SerializeField] private float _currentCoinsInWallet;
 
     public float currentCoinsInWallet
